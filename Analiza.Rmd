@@ -1,0 +1,50 @@
+---
+title: "Nicotiana"
+author: "BP"
+date: "10 03 2020"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+1. Fv/Fm (szalka, concentration, yield) - yield.csv
+
+
+* Kontola (brak hormonów ) - kontrola
+
+* 2mg/ IAA 1mg/l K - alfa
+
+* 2 mg/l IAA - beta
+
+* 2 mg/l IAA 1 mg/l BAP - gamma
+
+* 0,5 mg/l 2,4d 0,25mg/l bap - delta
+
+* 2mg/l 2,4-D 1 mg/l BAP - epsilon
+
+* 1 mg/l 2,4-D 0,5 mg/l BAP - dzeta
+
+```{r}
+library(ggplot2)
+library(ggpubr)
+yield = read.csv("./yield.csv")
+yield$szalka = as.factor(yield$szalka)
+yield$concentration = as.factor(yield$concentration)
+summary(yield)
+
+ggplot(data = yield) + 
+  geom_boxplot(aes(x=concentration, y=yield)) +
+  geom_jitter(aes(x=concentration, y=yield, color=szalka)) +
+  xlab("Kombinacja hormonow") + 
+  ylab("Fv/Fm")
+```
+
+* porownanie grup zapisane do pliku yield_results.txt
+
+```{r}
+kruskal.test(yield ~ concentration, data = yield)
+
+results = compare_means(yield ~ concentration, data = yield)
+write.table(results, "yield_results.txt") # porownanie grup zapisane do pliku yield_results.txt
+```
+
