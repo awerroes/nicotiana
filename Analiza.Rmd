@@ -48,3 +48,172 @@ results = compare_means(yield ~ concentration, data = yield)
 write.table(results, "yield_results.txt") # porownanie grup zapisane do pliku yield_results.txt
 ```
 
+2. Kiełkowanie nasion, rozwój kalusa
+
+2.1 Hormony (takie samo oznaczenie jak w Fv/Fm)
+
+* Kontola (brak hormonów ) - kontrola
+
+* 2mg/ IAA 1mg/l K - alfa
+
+* 2 mg/l IAA - beta
+
+* 2 mg/l IAA 1 mg/l BAP - gamma
+
+* 0,5 mg/l 2,4d 0,25mg/l bap - delta
+
+* 2mg/l 2,4-D 1 mg/l BAP - epsilon
+
+* 1 mg/l 2,4-D 0,5 mg/l BAP - dzeta
+
+2.1 Czy w poszczególnych dniach ilość siewek/ kalusów jest różna?
+
+```{r}
+library(ggplot2)
+library(ggpubr)
+
+kielkowanie = read.csv("./kielkowanie.csv")
+```
+
+2.1.1 Dzień 7
+
+* siewki
+
+```{r}
+ggplot(data = subset(kielkowanie, day == 7)) +
+  geom_jitter(aes(x=concentration, y=siewki))
+
+kruskal.test(siewki ~ concentration, data = subset(kielkowanie, day == 7))
+compare_means(siewki ~ concentration, data = subset(kielkowanie, day == 7))
+```
+
+* kalusy - niewidoczne
+
+2.1.2 Dzień 14
+
+* siewki
+
+```{r}
+ggplot(data = subset(kielkowanie, day == 14)) +
+  geom_jitter(aes(x=concentration, y=siewki))
+
+kruskal.test(siewki ~ concentration, data = subset(kielkowanie, day == 14))
+compare_means(siewki ~ concentration, data = subset(kielkowanie, day == 14))
+```
+
+* kalusy - niewidoczne
+
+2.1.3 Dzień 21
+
+* siewki
+
+```{r}
+ggplot(data = subset(kielkowanie, day == 21)) +
+  geom_jitter(aes(x=concentration, y=siewki))
+
+kruskal.test(siewki ~ concentration, data = subset(kielkowanie, day == 21))
+compare_means(siewki ~ concentration, data = subset(kielkowanie, day == 21))
+```
+
+* kalusy - niewidoczne
+
+2.1.4 Dzień 28
+
+* siewki
+
+```{r}
+ggplot(data = subset(kielkowanie, day == 28)) +
+  geom_jitter(aes(x=concentration, y=siewki))
+
+kruskal.test(siewki ~ concentration, data = subset(kielkowanie, day == 28))
+compare_means(siewki ~ concentration, data = subset(kielkowanie, day == 28))
+```
+
+* kalusy
+
+```{r}
+ggplot(data = subset(kielkowanie, day == 28)) +
+  geom_jitter(aes(x=concentration, y=kalusy))
+
+kruskal.test(kalusy ~ concentration, data = subset(kielkowanie, day == 28))
+compare_means(kalusy ~ concentration, data = subset(kielkowanie, day == 28))
+```
+
+2.1.5 Dzień 33
+
+* siewki
+
+```{r}
+ggplot(data = subset(kielkowanie, day == 33)) +
+  geom_jitter(aes(x=concentration, y=siewki))
+
+kruskal.test(siewki ~ concentration, data = subset(kielkowanie, day == 33))
+compare_means(siewki ~ concentration, data = subset(kielkowanie, day == 33))
+```
+
+* kalusy
+
+```{r}
+ggplot(data = subset(kielkowanie, day == 33)) +
+  geom_jitter(aes(x=concentration, y=kalusy))
+
+kruskal.test(kalusy ~ concentration, data = subset(kielkowanie, day == 33))
+compare_means(kalusy ~ concentration, data = subset(kielkowanie, day == 33))
+```
+
+2.1.6 Dzień 39
+
+* siewki
+
+```{r}
+ggplot(data = subset(kielkowanie, day == 39)) +
+  geom_jitter(aes(x=concentration, y=siewki))
+
+kruskal.test(siewki ~ concentration, data = subset(kielkowanie, day == 39))
+compare_means(siewki ~ concentration, data = subset(kielkowanie, day == 39))
+```
+
+* kalusy
+
+```{r}
+ggplot(data = subset(kielkowanie, day == 39)) +
+  geom_jitter(aes(x=concentration, y=kalusy))
+
+kruskal.test(kalusy ~ concentration, data = subset(kielkowanie, day == 39))
+compare_means(kalusy ~ concentration, data = subset(kielkowanie, day == 39))
+```
+
+2.1.7 Dzień 41
+
+* siewki
+
+```{r}
+ggplot(data = subset(kielkowanie, day == 41)) +
+  geom_jitter(aes(x=concentration, y=siewki))
+
+kruskal.test(siewki ~ concentration, data = subset(kielkowanie, day == 41))
+compare_means(siewki ~ concentration, data = subset(kielkowanie, day == 41))
+```
+
+* kalusy
+
+```{r}
+ggplot(data = subset(kielkowanie, day == 41)) +
+  geom_jitter(aes(x=concentration, y=kalusy))
+
+kruskal.test(kalusy ~ concentration, data = subset(kielkowanie, day == 41))
+compare_means(kalusy ~ concentration, data = subset(kielkowanie, day == 41))
+```
+
+3. Zmiany liczby siewek podczas kolejnych dni
+
+```{r}
+ggplot(data = kielkowanie) + geom_jitter(aes(x = day, y = siewki)) + facet_wrap(~concentration, nrow = 3) + theme_bw()
+```
+
+4. Zmiany liczby kalusów podczas kolejnych dni
+
+```{r}
+ggplot(data = kielkowanie) + geom_jitter(aes(x = day, y = kalusy)) + facet_wrap(~concentration, nrow = 3) + theme_bw()
+```
+```
