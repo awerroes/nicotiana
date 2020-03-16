@@ -1,0 +1,147 @@
+---
+title: "Regression modeling"
+author: "BP"
+date: "16 03 2020"
+output: word_document
+---
+
+# 1. Czy dodatek hormonu ma wpływ na liczbę powstających siewek?
+
+```{r}
+library(ggplot2)
+library(sandwich)
+
+kielkowanie <- read.csv("./kielkowanie.csv")
+
+ggplot(data = kielkowanie) + geom_jitter(aes(x=concentration, y=siewki, color = factor(day))) + geom_boxplot(aes(x=concentration, y=siewki))
+```
+
+## 1.1 Przez cały okres trwania eksperymentu
+
+### Poisson regression
+
+```{r}
+m1 = glm(siewki ~ concentration + day, family="poisson", data=kielkowanie)
+summary(m1)
+
+cov.m1 <- vcovHC(m1, type="HC0")
+std.err <- sqrt(diag(cov.m1))
+r.est <- cbind(Estimate= coef(m1), "Robust SE" = std.err,
+"Pr(>|z|)" = 2 * pnorm(abs(coef(m1)/std.err), lower.tail=FALSE),
+LL = coef(m1) - 1.96 * std.err,
+UL = coef(m1) + 1.96 * std.err)
+
+r.est
+```
+
+## W poszczególne dni:
+
+### Dzień 7
+
+```{r}
+m1_d7 = glm(siewki ~ concentration, family="poisson", data= subset(kielkowanie, day == 7))
+summary(m1_d7)
+
+cov.m1_d7 <- vcovHC(m1_d7, type="HC0")
+std.err_m1d7 <- sqrt(diag(cov.m1_d7))
+r.est_m1d7 <- cbind(Estimate= coef(m1_d7), "Robust SE" = std.err_m1d7,
+"Pr(>|z|)" = 2 * pnorm(abs(coef(m1_d7)/std.err_m1d7), lower.tail=FALSE),
+LL = coef(m1_d7) - 1.96 * std.err_m1d7,
+UL = coef(m1_d7) + 1.96 * std.err_m1d7)
+
+r.est_m1d7
+```
+
+# 2. Czy dodatek hormonu ma wpływ na liczbę powstających kalusów?
+
+```{r}
+ggplot(data = kielkowanie) + geom_jitter(aes(x=concentration, y=kalusy, color = factor(day))) + geom_boxplot(aes(x=concentration, y=kalusy))
+```
+
+## 2.1 Przez cały okres trwania eksperymentu
+
+### Poisson regression
+
+```{r}
+m2 = glm(kalusy ~ concentration + day, family="poisson", data=kielkowanie)
+summary(m2)
+
+cov.m2 <- vcovHC(m2, type="HC0")
+std.err_m2 <- sqrt(diag(cov.m2))
+r.est_m2 <- cbind(Estimate= coef(m2), "Robust SE" = std.err_m2,
+"Pr(>|z|)" = 2 * pnorm(abs(coef(m2)/std.err_m2), lower.tail=FALSE),
+LL = coef(m2) - 1.96 * std.err_m2,
+UL = coef(m2) + 1.96 * std.err_m2)
+
+r.est_m2
+```
+
+## W poszczególne dni:
+
+### Dzień 28
+
+```{r}
+ggplot(data= subset(kielkowanie, day == 28)) + geom_jitter(aes(x=concentration, y=kalusy))
+m2_d28 = glm(kalusy ~ concentration, family="poisson", data= subset(kielkowanie, day == 28))
+summary(m2_d28)
+
+cov.m2_d28 <- vcovHC(m2_d28, type="HC0")
+std.err_m2d28 <- sqrt(diag(cov.m2_d28))
+r.est_m2d28 <- cbind(Estimate= coef(m2_d28), "Robust SE" = std.err_m2d28,
+"Pr(>|z|)" = 2 * pnorm(abs(coef(m2_d28)/std.err_m2d28), lower.tail=FALSE),
+LL = coef(m2_d28) - 1.96 * std.err_m2d28,
+UL = coef(m2_d28) + 1.96 * std.err_m2d28)
+
+r.est_m2d28
+```
+
+### Dzień 33
+
+```{r}
+ggplot(data= subset(kielkowanie, day == 33)) + geom_jitter(aes(x=concentration, y=kalusy))
+m2_d33 = glm(kalusy ~ concentration, family="poisson", data= subset(kielkowanie, day == 33))
+summary(m2_d33)
+
+cov.m2_d33 <- vcovHC(m2_d33, type="HC0")
+std.err_m2d33 <- sqrt(diag(cov.m2_d33))
+r.est_m2d33 <- cbind(Estimate= coef(m2_d33), "Robust SE" = std.err_m2d33,
+"Pr(>|z|)" = 2 * pnorm(abs(coef(m2_d33)/std.err_m2d33), lower.tail=FALSE),
+LL = coef(m2_d33) - 1.96 * std.err_m2d33,
+UL = coef(m2_d33) + 1.96 * std.err_m2d33)
+
+r.est_m2d33
+```
+
+### Dzień 39
+
+```{r}
+ggplot(data= subset(kielkowanie, day == 39)) + geom_jitter(aes(x=concentration, y=kalusy))
+m2_d39 = glm(kalusy ~ concentration, family="poisson", data= subset(kielkowanie, day == 39))
+summary(m2_d39)
+
+cov.m2_d39 <- vcovHC(m2_d39, type="HC0")
+std.err_m2d39 <- sqrt(diag(cov.m2_d39))
+r.est_m2d39 <- cbind(Estimate= coef(m2_d39), "Robust SE" = std.err_m2d39,
+"Pr(>|z|)" = 2 * pnorm(abs(coef(m2_d39)/std.err_m2d39), lower.tail=FALSE),
+LL = coef(m2_d39) - 1.96 * std.err_m2d39,
+UL = coef(m2_d39) + 1.96 * std.err_m2d39)
+
+r.est_m2d39
+```
+
+### Dzień 41
+
+```{r}
+ggplot(data= subset(kielkowanie, day == 41)) + geom_jitter(aes(x=concentration, y=kalusy))
+m2_d41 = glm(kalusy ~ concentration, family="poisson", data= subset(kielkowanie, day == 41))
+summary(m2_d41)
+
+cov.m2_d41 <- vcovHC(m2_d41, type="HC0")
+std.err_m2d41 <- sqrt(diag(cov.m2_d41))
+r.est_m2d41 <- cbind(Estimate= coef(m2_d41), "Robust SE" = std.err_m2d41,
+"Pr(>|z|)" = 2 * pnorm(abs(coef(m2_d41)/std.err_m2d41), lower.tail=FALSE),
+LL = coef(m2_d41) - 1.96 * std.err_m2d41,
+UL = coef(m2_d41) + 1.96 * std.err_m2d41)
+
+r.est_m2d41
+```
