@@ -8,10 +8,13 @@ output: word_document
 # 1. Czy dodatek hormonu ma wpływ na liczbę powstających siewek?
 
 ```{r}
+library(forcats)
 library(ggplot2)
 library(sandwich)
 
+
 kielkowanie <- read.csv("./kielkowanie.csv")
+kielkowanie$concentration = fct_relevel(kielkowanie$concentration, "kontrola", "alfa")
 
 ggplot(data = kielkowanie) + geom_jitter(aes(x=concentration, y=siewki, color = factor(day))) + geom_boxplot(aes(x=concentration, y=siewki))
 ```
