@@ -148,3 +148,22 @@ UL = coef(m2_d41) + 1.96 * std.err_m2d41)
 
 r.est_m2d41
 ```
+
+## 3.Zmieniony zestaw danych
+
+```{r}
+sub_kielkowanie = subset(kielkowanie,
+                         kielkowanie$concentration == "delta" | 
+                           kielkowanie$concentration == "epsilon" |
+                           kielkowanie$concentration == "dzeta" |
+                           kielkowanie$concentration == "gamma")
+  
+sub_kielkowanie_day = subset(sub_kielkowanie, kielkowanie$day >= 21)
+
+ggplot(data = sub_kielkowanie_day) +
+  geom_boxplot(aes(x=concentration, y=kalusy)) + 
+  geom_jitter(aes(x=concentration, y=kalusy, color = factor(day))) +
+  theme_bw()
+modelX = glm(kalusy ~ concentration, family = "poisson", data = sub_kielkowanie_day)
+summary(modelX)
+```
